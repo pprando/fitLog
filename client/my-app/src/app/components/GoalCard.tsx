@@ -1,26 +1,32 @@
-import { FC } from "react";
 
+import React from 'react';
+
+// prioridades que o componente vai receber
 interface GoalCardProps {
+  progress: number;
   total: number;
-  completed: number;
 }
 
-const GoalCard: FC<GoalCardProps> = ({ total, completed }) => {
-  const progress = (completed / total) * 100;
+const GoalCard: React.FC<GoalCardProps> = ({ progress, total }) => {
+  // Calcula a porcentagem do progresso. Evita divisão por zero.
+  const percentage = total > 0 ? (progress / total) * 100 : 0;
 
   return (
-    <div className="bg-zinc-900 rounded-xl p-4 shadow-md">
-      <h2 className="text-lg font-semibold text-white">Meta Semanal</h2>
-      <p className="text-sm text-gray-400">{total} treinos</p>
-      <div className="mt-2 w-full bg-gray-800 h-2 rounded">
-        <div
-          className="h-2 bg-green-600 rounded"
-          style={{ width: `${progress}%` }}
-        />
+    <div className="bg-gray-800 rounded-lg p-4 w-full shadow-lg">
+      <div className="flex justify-between items-center mb-2">
+        <p className="text-gray-300">Progresso da meta</p>
+        <p className="font-bold text-white">
+          {progress}/{total}
+        </p>
       </div>
-      <p className="mt-1 text-sm text-gray-300">
-        {completed} de {total} treinos completos
-      </p>
+      {/* Barra de progresso */}
+      <div className="w-full bg-gray-700 rounded-full h-2.5">
+        <div
+          className="bg-green-500 h-2.5 rounded-full"
+          style={{ width: `${percentage}%` }}
+        ></div>
+      </div>
+      <p className="text-right text-sm text-gray-400 mt-1">{Math.round(percentage)}%</p>
     </div>
   );
 };
